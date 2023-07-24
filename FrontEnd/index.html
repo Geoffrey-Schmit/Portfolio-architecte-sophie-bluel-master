@@ -17,7 +17,7 @@
                 <ul>
                     <li>projets</li>
                     <li>contact</li>
-                    <li>login</li>
+                    <li><a href="./assets/pages/admin.html">login</a></li>
                     <li><img src="./assets/icons/instagram.png" alt="Instagram" /></li>
                 </ul>
             </nav>
@@ -40,6 +40,13 @@
             </section>
             <section id="portfolio">
                 <h2>Mes Projets</h2>
+                <h5>Filtrer par catégories :</h5>
+                <div id="filterSearch">
+                    <button class="btn-filter" data-category="all">Tous</button>
+                    <button class="btn-filter" data-category="1">Objets</button>
+                    <button class="btn-filter" data-category="2">Appartements</button>
+                    <button class="btn-filter" data-category="3">Hotels & restaurants</button>
+                </div>
                 <div class="gallery"></div>
             </section>
             <section id="contact">
@@ -64,6 +71,6 @@
                 </ul>
             </nav>
         </footer>
-        <script src="./assets/index.js"></script>
+        <script src="./assets/scripts/index.js"></script>
     </body>
 </html>
