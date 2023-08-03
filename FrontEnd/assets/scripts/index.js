@@ -62,7 +62,8 @@ function setupFilterButtons(categories) {
     const filterButtonsContainer = document.getElementById('filterSearch');
     filterButtonsContainer.innerHTML = '';
 
-    const allButton = createFilterButton('Reset', 'all');
+    const allButton = createFilterButton('Tous', 'all');
+    allButton.classList.add('active');
     filterButtonsContainer.appendChild(allButton);
 
     categories.forEach((category) => {
@@ -79,6 +80,12 @@ function createFilterButton(label, category) {
     button.textContent = label;
     button.addEventListener('click', () => {
         filterImages(category);
+        // Supprimer la classe active de tous les boutons de filtre
+        const filterButtons = document.querySelectorAll('.btn-filter');
+        filterButtons.forEach((btn) => btn.classList.remove('active'));
+
+        // Ajouter la classe active au bouton cliqué
+        button.classList.add('active');
     });
     return button;
 }

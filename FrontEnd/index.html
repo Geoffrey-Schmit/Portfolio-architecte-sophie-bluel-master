@@ -12,15 +12,17 @@
     </head>
     <body>
         <header>
-            <h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
-            <nav>
-                <ul>
-                    <li>projets</li>
-                    <li>contact</li>
-                    <li><a href="./assets/pages/admin.html">login</a></li>
-                    <li><img src="./assets/icons/instagram.png" alt="Instagram" /></li>
-                </ul>
-            </nav>
+            <div class="head">
+                <h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
+                <nav>
+                    <ul>
+                        <li><a href="../../index.html">projets</a></li>
+                        <li>contact</li>
+                        <li><a href="../FrontEnd/assets/pages/admin.html">login</a></li>
+                        <li><img src="./assets/icons/instagram.png" alt="Instagram" /></li>
+                    </ul>
+                </nav>
+            </div>
         </header>
         <main>
             <section id="introduction">
@@ -48,6 +50,24 @@
                     <button class="btn-filter" data-category="3">Hotels & restaurants</button>
                 </div>
                 <div class="gallery"></div>
+                <aside id="modal1" class="modal" aria-hidden="true" role="dialog">
+                    <div class="modal-wrapper">
+                        <div class="nav-modal">
+                            <svg width="12" height="12" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M11.6546 2.05106C12.1235 1.58214 12.1235 0.820611 11.6546 0.351691C11.1856 -0.11723 10.4241 -0.11723 9.95519 0.351691L6.005 4.30563L2.05106 0.355442C1.58214 -0.113479 0.820611 -0.113479 0.351691 0.355442C-0.11723 0.824363 -0.11723 1.58589 0.351691 2.05481L4.30563 6.005L0.355442 9.95894C-0.113479 10.4279 -0.113479 11.1894 0.355442 11.6583C0.824363 12.1272 1.58589 12.1272 2.05481 11.6583L6.005 7.70437L9.95894 11.6546C10.4279 12.1235 11.1894 12.1235 11.6583 11.6546C12.1272 11.1856 12.1272 10.4241 11.6583 9.95519L7.70437 6.005L11.6546 2.05106Z"
+                                    fill="black"
+                                />
+                            </svg>
+                        </div>
+                        <h3 class="title-modal">Galerie photo</h3>
+                        <div class="gallery"></div>
+                        <div class="send-modal">
+                            <button type="submit">Ajouter une photo</button>
+                            <p class="delete-gallery">Supprimer la galerie</p>
+                        </div>
+                    </div>
+                </aside>
             </section>
             <section id="contact">
                 <h2>Contact</h2>
