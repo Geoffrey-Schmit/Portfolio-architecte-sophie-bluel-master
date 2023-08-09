@@ -1,91 +1,71 @@
-let allImages = [];
-let allCategories = [];
+// Attend que la fenêtre soit complètement chargée avant d'exécuter du code
+window.addEventListener('load', function () {
+    // Vérifie si l'utilisateur est connecté ou déconnecté
+    let isLoggedIn = sessionStorage.getItem('isLoggedIn');
+    let isLoggedOut = sessionStorage.getItem('isLoggedOut');
 
-// Récupérer les catégories depuis l'API
-fetch('http://localhost:5678/api/categories')
-    .then((data) => data.json())
-    .then((categories) => {
-        setupFilterButtons(categories);
-    });
-
-// Récupérer les projets depuis l'API
-fetch('http://localhost:5678/api/works')
-    .then((data) => data.json())
-    .then((jsonListArticle) => {
-        const articles = jsonListArticle;
-        allImages = articles.map((article) => {
-            return {
-                id: article.id,
-                url: article.imageUrl,
-                title: article.title,
-                category: article.category,
-            };
+    // Affiche les éléments avec la classe 'isLoggedIn' si l'utilisateur est connecté
+    if (isLoggedIn) {
+        const isLoggedInList = document.querySelectorAll('.isLoggedIn');
+        isLoggedInList.forEach((inList) => {
+            inList.style.display = 'flex';
         });
-
-        // Afficher tous les projets au chargement de la page
-        displayImages(allImages);
-    });
-
-// Fonction pour afficher les images dans la galerie
-function displayImages(images) {
-    const galleryElement = document.querySelector('.gallery');
-    galleryElement.innerHTML = '';
-
-    images.forEach((image) => {
-        const figureElement = document.createElement('figure');
-        const imgElement = document.createElement('img');
-        imgElement.src = image.url;
-        imgElement.alt = image.title;
-
-        const figcaptionElement = document.createElement('figcaption');
-        figcaptionElement.textContent = image.title;
-
-        figureElement.appendChild(imgElement);
-        figureElement.appendChild(figcaptionElement);
-        galleryElement.appendChild(figureElement);
-    });
-}
-
-// Fonction pour filtrer les projets en fonction de la catégorie
-function filterImages(categoryId) {
-    if (categoryId === 'all') {
-        displayImages(allImages);
-    } else {
-        const filteredImages = allImages.filter((image) => image.category.id === categoryId);
-
-        displayImages(filteredImages);
     }
-}
 
-// Fonction pour créer les boutons de filtre avec les catégories
-function setupFilterButtons(categories) {
-    const filterButtonsContainer = document.getElementById('filterSearch');
-    filterButtonsContainer.innerHTML = '';
+    // Masque les éléments avec la classe 'isLoggedOut' si l'utilisateur est déconnecté
+    if (isLoggedOut) {
+        const isLoggedOutList = document.querySelectorAll('.isLoggedOut');
+        isLoggedOutList.forEach((outList) => {
+            outList.style.display = 'none';
+        });
+    }
+});
 
-    const allButton = createFilterButton('Tous', 'all');
-    allButton.classList.add('active');
-    filterButtonsContainer.appendChild(allButton);
+// Écouteur d'événement pour le changement de fichier dans l'input de téléchargement
+const fileInput = document.getElementById('ajoutPhotoBtn');
+fileInput.onchange = () => {
+    const selectedFile = fileInput.files[0];
+};
 
-    categories.forEach((category) => {
-        const button = createFilterButton(category.name, category.id);
-        filterButtonsContainer.appendChild(button);
-    });
-}
+// Écouteur d'événement pour le bouton de déconnexion
+document.getElementById('logout').addEventListener('click', function (event) {
+    event.preventDefault();
 
-// Fonction pour créer un bouton de filtre
-function createFilterButton(label, category) {
-    const button = document.createElement('button');
-    button.classList.add('btn-filter');
-    button.setAttribute('data-category', category);
-    button.textContent = label;
-    button.addEventListener('click', () => {
-        filterImages(category);
-        // Supprimer la classe active de tous les boutons de filtre
-        const filterButtons = document.querySelectorAll('.btn-filter');
-        filterButtons.forEach((btn) => btn.classList.remove('active'));
+    deconnecter(); // Appelle la fonction de déconnexion
+});
 
-        // Ajouter la classe active au bouton cliqué
-        button.classList.add('active');
-    });
-    return button;
-}
+// Écouteur d'événement lorsque la fenêtre est complètement chargée
+window.addEventListener('load', async () => {
+    await getCategory(); // Appelle la fonction pour récupérer les catégories
+
+    document.querySelector('.bouton-tous').click(); // Simule un clic sur un bouton
+    const arrowBack = document.getElementById('arrowBack');
+    arrowBack.addEventListener('click', backToBasicModal); // Associe une fonction à l'événement clic
+
+    getProjectModal(); // Appelle la fonction pour récupérer les projets
+    getCategoriesModal(); // Appelle la fonction pour récupérer les catégories
+
+    document.addEventListener('click', deleteProjectWithConfirmation); // Associe une fonction à l'événement clic
+
+    const ajoutButton = document.getElementById('ajout-image');
+    ajoutButton.addEventListener('click', addPicture); // Associe une fonction à l'événement clic
+    ajoutButton.addEventListener('click', changeBtnColor); // Associe une fonction à l'événement clic
+});
+
+// Écouteur d'événement pour le changement de fichier dans l'input de téléchargement
+let ajoutPhotoBouton = document.getElementById('ajoutPhotoBtn');
+ajoutPhotoBouton.addEventListener('change', () => {
+    validateImageProject(); // Appelle la fonction pour valider l'image
+});
+
+// Écouteur d'événement pour la saisie dans le champ de titre
+titrePhoto.addEventListener('input', (e) => {
+    validateTitleProject(e); // Appelle la fonction pour valider le titre
+});
+
+// Écouteur d'événement pour le clic sur le bouton de soumission
+const submitPhoto = document.getElementById('validerBtn');
+submitPhoto.addEventListener('click', (e) => {
+    e.preventDefault();
+    validateFormProject(); // Appelle la fonction pour valider le formulaire du projet
+});

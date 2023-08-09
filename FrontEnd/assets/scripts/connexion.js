@@ -1,33 +1,54 @@
-function connexion() {
-    // Récupérer les valeurs saisies par l'utilisateur
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-
-    if (email.trim() === '' || password.trim() === '') {
-        document.getElementById('message').innerText = 'Veuillez remplir tous les champs';
-        return;
-    }
-
-    const requestData = {
-        email: email,
-        password: password,
-    };
-
-    fetch('http://localhost:5678/api/users/login', {
+async function connexionUser() {
+    const formEl = document.getElementById('login-form');
+    console.log('formEl', formEl);
+    const formData = new FormData(formEl);
+    const response = await fetch('http://localhost:5678/api/users/login', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestData),
-    })
-        .then((response) => response.json())
-        .then((data) => {
-            if ('userId' in data && 'token' in data) {
-                document.getElementById('message').innerText = 'Connexion réussie!';
+        headers: { accept: 'application/json', 'Content-Type': 'application/json' },
 
-                window.location.href = '../pages/homepage_edit.html';
-            } else {
-                document.getElementById('message').innerText = 'Email ou mot de passe incorrect';
-            }
+        body: JSON.stringify(Object.fromEntries(formData)),
+    });
+
+    if (response.status === 200) {
+        const userInfos = await response.json();
+        const token = JSON.stringify(userInfos.token);
+        sessionStorage.setItem('token', JSON.parse(token));
+        sessionStorage.setItem('isLoggedIn', true);
+        sessionStorage.setItem('isLoggedOut', false);
+        const isLoggedOutList = document.querySelectorAll('.isLoggedOut');
+        isLoggedOutList.forEach((outList) => {
+            outList.hidden = true;
         });
+        const isLoggedInList = document.querySelectorAll('.isLoggedIn');
+        isLoggedInList.forEach((inList) => {
+            inList.hidden = false;
+        });
+        window.location.href = '../../index.html';
+    } else {
+        alert("Le mot de passe et/ou l'e-mail est incorrecte");
+        sessionStorage.setItem('isLoggedIn', false);
+        sessionStorage.setItem('isLoggedOut', true);
+        const isLoggedOutList = document.querySelectorAll('.isLoggedOut');
+        isLoggedOutList.forEach((outList) => {
+            outList.hidden = false;
+        });
+        const isLoggedInList = document.querySelectorAll('.isLoggedIn');
+        isLoggedInList.forEach((inList) => {
+            inList.hidden = true;
+        });
+    }
+}
+
+function deconnecter() {
+    sessionStorage.removeItem('isLoggedIn', false);
+    sessionStorage.removeItem('isLoggedOut', true);
+    const isLoggedOutList = document.querySelectorAll('.isLoggedOut');
+    isLoggedOutList.forEach((outList) => {
+        outList.hidden = false;
+    });
+    const isLoggedInList = document.querySelectorAll('.isLoggedIn');
+    isLoggedInList.forEach((inList) => {
+        inList.hidden = true;
+    });
+    window.location.href = './index.html';
 }
