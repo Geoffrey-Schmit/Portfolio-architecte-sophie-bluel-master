@@ -1,8 +1,8 @@
 // Attend que la fenêtre soit complètement chargée avant d'exécuter du code
 window.addEventListener('load', function () {
     // Vérifie si l'utilisateur est connecté ou déconnecté
-    let isLoggedIn = sessionStorage.getItem('isLoggedIn');
-    let isLoggedOut = sessionStorage.getItem('isLoggedOut');
+    let isLoggedIn = localStorage.getItem('isLoggedIn');
+    let isLoggedOut = localStorage.getItem('isLoggedOut');
 
     // Affiche les éléments avec la classe 'isLoggedIn' si l'utilisateur est connecté
     if (isLoggedIn) {

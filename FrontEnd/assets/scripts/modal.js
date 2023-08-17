@@ -113,14 +113,14 @@ async function deleteProjectWithConfirmation(e) {
         const projectId = e.target.dataset.id;
 
         // Affiche le jeton d'authentification stocké dans la session
-        console.log(sessionStorage.getItem('token'));
+        console.log(localStorage.getItem('token'));
 
         // Envoie une requête DELETE à l'API pour supprimer le projet avec l'ID spécifié
         const response = await fetch('http://localhost:5678/api/works/' + projectId, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
-                authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                authorization: `Bearer ${localStorage.getItem('token')}`,
             },
         });
 
@@ -296,7 +296,7 @@ async function validateFormProject() {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
-                Authorization: 'Bearer ' + sessionStorage.getItem('token'),
+                Authorization: 'Bearer ' + localStorage.getItem('token'),
             },
             body: formData,
         });
